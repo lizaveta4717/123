@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Яндекс Еда — доставка из ресторанов</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 0;
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+        }
+        .app-container { max-width: 1280px; margin: 0 auto; padding: 0 16px; }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0 12px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo-area { display: flex; align-items: center; gap: 8px; }
+        .logo-icon {
+            background: #FFD400;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            color: #000;
+        }
+        .logo-text { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; color: #000; }
+        .address-wrapper { display: flex; align-items: center; gap: 10px; }
+        .address-bar {
+            background: #F5F5F5;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background 0.15s;
+            color: #1A1A1A;
+            border: none;
+        }
+        .address-bar:hover { background: #EBEBEB; }
+        .address-bar i { color: #B3B3B3; }
+        .change-address-btn {
+            background: #FFD400;
+            border: none;
+            border-radius: 40px;
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .change-address-btn:hover { background: #F0C800; }
+        .city-badge {
+            background: #F5F5F5;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .city-badge i { color: #FFD400; }
+        .filters-panel {
+            background: #FFFFFF;
+            border-radius: 20px;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 16px 16px;
+        }
+        .filter-group { flex: 1 1 170px; min-width: 150px; }
+        .filter-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #8C8C8C;
+            margin-bottom: 6px;
+        }
+        .filter-label i { margin-right: 6px; color: #B3B3B3; font-size: 12px; }
+        .filter-select, .filter-input {
+            width: 100%;
+            padding: 12px 14px;
+            background: #F5F5F5;
+            border: 1px solid #E6E6E6;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #1A1A1A;
+            outline: none;
+            transition: all 0.1s;
+            font-family: 'Inter', sans-serif;
+        }
+        .filter-select {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="%238C8C8C" d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            appearance: none;
+        }
+        .filter-select:focus, .filter-input:focus {
+            border-color: #FFD400;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(255,212,0,0.15);
+        }
+        .budget-wrapper { display: flex; align-items: center; gap: 8px; }
+        .budget-wrapper .filter-input { width: calc(50% - 4px); }
+        .apply-btn {
+            background: #FFD400;
+            border: none;
+            border-radius: 40px;
+            padding: 12px 28px;
+            font-weight: 600;
+            font-size: 16px;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+            margin-left: auto;
+            height: 48px;
+        }
+        .apply-btn:hover { background: #F0C800; }
+        .filter-badge {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        .badge {
+            background: #F5F5F5;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #1A1A1A;
+        }
+        .badge i.fa-times { color: #8C8C8C; cursor: pointer; }
+        .clear-all {
+            margin-left: 8px;
+            color: #8C8C8C;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .smart-recommendation {
+            background: #1A1A1A;
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 32px;
+            color: white;
+        }
+        .rec-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .rec-header i { font-size: 24px; color: #FFD400; }
+        .rec-header h2 { font-weight: 700; font-size: 22px; color: #fff; }
+        .rec-header span {
+            background: #FFD400;
+            color: #000;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+        .best-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+        .best-card {
+            background: rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 18px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .resto-name {
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            color: #fff;
+        }
+        .rating { color: #FFD400; font-weight: 700; }
+        .dish-name { margin-top: 10px; font-size: 18px; font-weight: 600; }
+        .price { margin-top: 6px; color: #FFD400; font-weight: 700; font-size: 18px; }
+        .allergen-safe {
+            background: rgba(46, 204, 113, 0.15);
+            border-radius: 40px;
+            padding: 4px 12px;
+            font-size: 13px;
+            display: inline-block;
+            margin-top: 12px;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            color: #A8E6C3;
+        }
+        .restaurants-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin: 28px 0 18px;
+        }
+        .restaurants-header h3 { font-size: 24px; font-weight: 700; }
+        .sort-info { color: #8C8C8C; font-size: 15px; }
+        .resto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .resto-card {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 20px;
+            border: 1px solid #F0F0F0;
+            transition: box-shadow 0.15s;
+        }
+        .resto-card:hover { box-shadow: 0 12px 28px rgba(0,0,0,0.06); }
+        .resto-title {
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+        }
+        .resto-meta {
+            display: flex;
+            gap: 16px;
+            margin: 8px 0 14px;
+            font-size: 14px;
+            color: #666;
+        }
+        .cuisine-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+        .tag {
+            background: #F5F5F5;
+            border-radius: 40px;
+            padding: 4px 14px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .dish-list {
+            border-top: 1px solid #F0F0F0;
+            padding-top: 16px;
+            margin-top: 8px;
+        }
+        .dish-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+        .dish-name-small {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        .allergen-icon { color: #2EBD59; }
+        .best-match-badge {
+            background: #FFD400;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 14px;
+            display: inline-block;
+        }
+        .footer-note {
+            text-align: center;
+            margin: 48px 0 32px;
+            color: #8C8C8C;
+            font-size: 15px;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(3px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal {
+            background: #fff;
+            border-radius: 32px;
+            padding: 28px;
+            max-width: 440px;
+            width: 90%;
+        }
+        .modal h3 { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
+        .modal select, .modal input {
+            width: 100%;
+            padding: 16px;
+            border-radius: 20px;
+            border: 1px solid #E6E6E6;
+            background: #F5F5F5;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+        .modal-actions { display: flex; gap: 12px; }
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .modal-btn.primary { background: #FFD400; }
+        .modal-btn.secondary { background: #F5F5F5; }
+        @media (max-width: 640px) {
+            .app-container { padding: 0 12px; }
+            .apply-btn { margin-left: 0; width: 100%; justify-content: center; }
+            .filter-row { flex-direction: column; align-items: stretch; }
+            .header { flex-direction: column; align-items: flex-start; }
+            .address-wrapper { width: 100%; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <div class="logo-area">
+            <div class="logo-icon">Е</div>
+            <div class="logo-text">Яндекс Еда</div>
+        </div>
+        <div class="address-wrapper">
+            <div class="city-badge">
+                <i class="fas fa-city"></i>
+                <span id="currentCityDisplay">Москва</span>
+            </div>
+            <div class="address-bar" id="addressDisplay">
+                <i class="fas fa-map-pin"></i> 
+                <span id="currentAddressText">ул. Тверская, 12</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <button class="change-address-btn" id="changeAddressBtn">
+                <i class="fas fa-pencil-alt"></i> Сменить адрес
+            </button>
+        </div>
+    </div>
+
+    <div class="filters-panel">
+        <div class="filter-row">
+            <div class="filter-group">
+                <label class="filter-label"><i class="fas fa-allergies"></i> Аллергены</label>
+                <select id="allergenSelect" class="filter-select">
+                    <option value="">Не выбрано</option>
+                    <option value="gluten">Глютен</option>
+                    <option value="lactose">Лактоза</option>
+                    <option value="nuts">Орехи</option>
+                    <option value="seafood">Морепродукты</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label"><i class="fas fa-ruble-sign"></i> Бюджет</label>
+                <div class="budget-wrapper">
+                    <input type="number" id="budgetMin" class="filter-input" placeholder="От" value="300">
+                    <input type="number" id="budgetMax" class="filter-input" placeholder="До" value="1500">
+                </div>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label"><i class="fas fa-star"></i> Рейтинг</label>
+                <select id="ratingSelect" class="filter-select">
+                    <option value="0">Любой</option>
+                    <option value="4.0">от 4.0 ★</option>
+                    <option value="4.5" selected>от 4.5 ★</option>
+                    <option value="4.7">от 4.7 ★</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label"><i class="fas fa-heart"></i> Любимая еда</label>
+                <select id="cuisineSelect" class="filter-select">
+                    <option value="">Всё</option>
+                    <option value="Пицца" selected>Пицца</option>
+                    <option value="Суши">Суши</option>
+                    <option value="Бургеры">Бургеры</option>
+                    <option value="Итальянская">Итальянская</option>
+                    <option value="Азиатская">Азиатская</option>
+                    <option value="Веганская">Веганская</option>
+                </select>
+            </div>
+            <button class="apply-btn" id="applyFilters"><i class="fas fa-sliders-h"></i> Применить</button>
+        </div>
+        <div class="filter-badge" id="activeFiltersDisplay"></div>
+    </div>
+
+    <div class="smart-recommendation">
+        <div class="rec-header">
+            <i class="fas fa-crown"></i>
+            <h2>⭐ Лучшие для вас <span id="recContext">Пицца · Москва</span></h2>
+        </div>
+        <div class="best-items-grid" id="bestGrid"></div>
+    </div>
+
+    <div class="restaurants-header">
+        <h3><i class="fas fa-store-alt" style="margin-right: 8px;"></i>Рестораны <span id="cityInTitle">в Москве</span></h3>
+        <div class="sort-info" id="sortInfo">найдено 0 ресторанов</div>
+    </div>
+    <div class="resto-grid" id="restaurantsGrid"></div>
+    <div class="footer-note">
+        <i class="far fa-check-circle" style="margin-right: 6px;"></i> Доставка от 30 минут • Бесплатно при заказе от 700 ₽
+    </div>
+</div>
+
+<div class="modal-overlay" id="addressModal">
+    <div class="modal">
+        <h3>Укажите адрес доставки</h3>
+        <select id="citySelect">
+            <option value="Москва" selected>Москва</option>
+            <option value="Санкт-Петербург">Санкт-Петербург</option>
+            <option value="Казань">Казань</option>
+            <option value="Екатеринбург">Екатеринбург</option>
+            <option value="Новосибирск">Новосибирск</option>
+        </select>
+        <input type="text" id="newAddressInput" placeholder="Улица, дом" value="ул. Тверская, 12">
+        <div class="modal-actions">
+            <button class="modal-btn secondary" id="cancelAddress">Отмена</button>
+            <button class="modal-btn primary" id="saveAddress">Сохранить</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function(){
+        // ---------- БАЗА РЕСТОРАНОВ (жёстко привязана к городам) ----------
+        const restaurantsDatabase = {
+            "Москва": [
+                { id: 1, name: "Pizza 22 cm", rating: 4.8, minPrice: 450, maxPrice: 1200, cuisines: ["Пицца", "Итальянская"], allergens: ["gluten"], dishes: [
+                    { name: "Маргарита", price: 490, allergens: ["gluten"] },
+                    { name: "Пепперони", price: 590, allergens: ["gluten"] },
+                    { name: "4 сыра", price: 650, allergens: ["gluten","lactose"] }
+                ]},
+                { id: 2, name: "Sushi Wok", rating: 4.6, minPrice: 400, maxPrice: 1400, cuisines: ["Суши", "Азиатская"], allergens: ["seafood","gluten"], dishes: [
+                    { name: "Филадельфия", price: 650, allergens: ["seafood"] },
+                    { name: "Калифорния", price: 590, allergens: ["seafood"] }
+                ]},
+                { id: 3, name: "Burger Heroes", rating: 4.9, minPrice: 350, maxPrice: 950, cuisines: ["Бургеры"], allergens: ["gluten","lactose"], dishes: [
+                    { name: "Чизбургер", price: 420, allergens: ["gluten","lactose"] }
+                ]},
+                { id: 4, name: "Итальяно", rating: 4.7, minPrice: 600, maxPrice: 1600, cuisines: ["Итальянская","Пицца"], allergens: ["gluten"], dishes: [
+                    { name: "Лазанья", price: 720, allergens: ["gluten","lactose"] }
+                ]},
+                { id: 5, name: "Green Vegan", rating: 4.5, minPrice: 390, maxPrice: 1100, cuisines: ["Веганская"], allergens: [], dishes: [
+                    { name: "Боул с киноа", price: 490, allergens: [] }
+                ]}
+            ],
+            "Санкт-Петербург": [
+                { id: 6, name: "Питерская Пицца", rating: 4.5, minPrice: 400, maxPrice: 1100, cuisines: ["Пицца"], allergens: ["gluten"], dishes: [
+                    { name: "Невская", price: 550, allergens: ["gluten"] },
+                    { name: "Питерская", price: 490, allergens: ["gluten"] }
+                ]},
+                { id: 7, name: "Суши Хаус", rating: 4.7, minPrice: 500, maxPrice: 1500, cuisines: ["Суши"], allergens: ["seafood"], dishes: [
+                    { name: "Сет Нева", price: 1200, allergens: ["seafood"] },
+                    { name: "Ролл Исаакий", price: 650, allergens: ["seafood"] }
+                ]},
+                { id: 8, name: "Веган Маркет", rating: 4.8, minPrice: 350, maxPrice: 900, cuisines: ["Веганская"], allergens: [], dishes: [
+                    { name: "Боул с тофу", price: 480, allergens: [] },
+                    { name: "Смузи боул", price: 390, allergens: [] }
+                ]},
+                { id: 9, name: "Бургерная №1", rating: 4.6, minPrice: 380, maxPrice: 950, cuisines: ["Бургеры"], allergens: ["gluten"], dishes: [
+                    { name: "Бургер с говядиной", price: 520, allergens: ["gluten"] }
+                ]}
+            ],
+            "Казань": [
+                { id: 10, name: "Татарская кухня", rating: 4.6, minPrice: 350, maxPrice: 900, cuisines: ["Азиатская"], allergens: ["gluten"], dishes: [
+                    { name: "Эчпочмак", price: 320, allergens: ["gluten"] },
+                    { name: "Кыстыбый", price: 280, allergens: ["gluten"] }
+                ]},
+                { id: 11, name: "Казан Пицца", rating: 4.4, minPrice: 380, maxPrice: 1000, cuisines: ["Пицца"], allergens: ["gluten"], dishes: [
+                    { name: "Казанская", price: 490, allergens: ["gluten"] },
+                    { name: "Мясная", price: 590, allergens: ["gluten"] }
+                ]},
+                { id: 12, name: "Суши Казань", rating: 4.5, minPrice: 450, maxPrice: 1300, cuisines: ["Суши"], allergens: ["seafood"], dishes: [
+                    { name: "Сет Казань", price: 1100, allergens: ["seafood"] }
+                ]}
+            ],
+            "Екатеринбург": [
+                { id: 13, name: "Уральские пельмени", rating: 4.9, minPrice: 300, maxPrice: 800, cuisines: ["Русская"], allergens: ["gluten"], dishes: [
+                    { name: "Пельмени", price: 380, allergens: ["gluten"] },
+                    { name: "Вареники", price: 350, allergens: ["gluten"] }
+                ]},
+                { id: 14, name: "Пицца Урал", rating: 4.3, minPrice: 400, maxPrice: 1100, cuisines: ["Пицца"], allergens: ["gluten"], dishes: [
+                    { name: "Уральская", price: 520, allergens: ["gluten"] }
+                ]}
+            ],
+            "Новосибирск": [
+                { id: 15, name: "Сибирская кухня", rating: 4.5, minPrice: 400, maxPrice: 1000, cuisines: ["Русская"], allergens: [], dishes: [
+                    { name: "Борщ", price: 350, allergens: [] },
+                    { name: "Пельмени сибирские", price: 420, allergens: ["gluten"] }
+                ]},
+                { id: 16, name: "Суши Новосиб", rating: 4.6, minPrice: 500, maxPrice: 1400, cuisines: ["Суши"], allergens: ["seafood"], dishes: [
+                    { name: "Сет Сибирь", price: 1250, allergens: ["seafood"] }
+                ]}
+            ]
+        };
+
+        // DOM элементы
+        const citySelect = document.getElementById('citySelect');
+        const newAddressInput = document.getElementById('newAddressInput');
+        const currentCitySpan = document.getElementById('currentCityDisplay');
+        const currentAddressSpan = document.getElementById('currentAddressText');
+        const cityInTitle = document.getElementById('cityInTitle');
+        const changeAddressBtn = document.getElementById('changeAddressBtn');
+        const addressModal = document.getElementById('addressModal');
+        const cancelAddress = document.getElementById('cancelAddress');
+        const saveAddress = document.getElementById('saveAddress');
+        
+        const allergenSelect = document.getElementById('allergenSelect');
+        const budgetMin = document.getElementById('budgetMin');
+        const budgetMax = document.getElementById('budgetMax');
+        const ratingSelect = document.getElementById('ratingSelect');
+        const cuisineSelect = document.getElementById('cuisineSelect');
+        const applyBtn = document.getElementById('applyFilters');
+        const restaurantsGrid = document.getElementById('restaurantsGrid');
+        const bestGrid = document.getElementById('bestGrid');
+        const sortInfo = document.getElementById('sortInfo');
+        const recContext = document.getElementById('recContext');
+        const activeFiltersDisplay = document.getElementById('activeFiltersDisplay');
+
+        // Текущее состояние
+        let currentCity = 'Москва';
+        let currentAddress = 'ул. Тверская, 12';
+        let currentFilters = { allergen: '', budget: { min: 300, max: 1500 }, rating: 4.5, cuisine: 'Пицца' };
+        const allergenMap = { gluten:'глютен', lactose:'лактоза', nuts:'орехи', seafood:'морепродукты' };
+
+        // Модалка
+        function openModal() { 
+            citySelect.value = currentCity;
+            newAddressInput.value = currentAddress;
+            addressModal.style.display = 'flex'; 
+        }
+        function closeModal() { addressModal.style.display = 'none'; }
+        
+        changeAddressBtn.addEventListener('click', openModal);
+        document.querySelector('.address-bar').addEventListener('click', openModal);
+        cancelAddress.addEventListener('click', closeModal);
+        addressModal.addEventListener('click', (e) => { if(e.target === addressModal) closeModal(); });
+        
+        saveAddress.addEventListener('click', () => {
+            const newCity = citySelect.value;
+            const newAddr = newAddressInput.value.trim();
+            if (newAddr) {
+                currentCity = newCity;
+                currentAddress = newAddr;
+                currentCitySpan.textContent = currentCity;
+                currentAddressSpan.textContent = currentAddress;
+                cityInTitle.textContent = `в ${currentCity}`;
+                closeModal();
+                applyFiltersAndRender();
+            }
+        });
+
+        // Фильтрация
+        function getCurrentCityRestaurants() {
+            return restaurantsDatabase[currentCity] || [];
+        }
+
+        function filterRestaurants() {
+            let filtered = getCurrentCityRestaurants().filter(r => {
+                if (r.minPrice > currentFilters.budget.max || r.maxPrice < currentFilters.budget.min) return false;
+                if (currentFilters.rating > 0 && r.rating < currentFilters.rating) return false;
+                if (currentFilters.cuisine && !r.cuisines.includes(currentFilters.cuisine)) return false;
+                if (currentFilters.allergen && r.allergens.includes(currentFilters.allergen)) return false;
+                return true;
+            });
+            return filtered;
+        }
+
+        function updateBadges() {
+            let html = '';
+            if (currentFilters.allergen) html += `<div class="badge"><i class="fas fa-allergies"></i> Без ${allergenMap[currentFilters.allergen]||currentFilters.allergen} <i class="fas fa-times" data-remove="allergen"></i></div>`;
+            if (currentFilters.budget.min !== 300 || currentFilters.budget.max !== 1500) html += `<div class="badge"><i class="fas fa-ruble-sign"></i> ${currentFilters.budget.min}–${currentFilters.budget.max}₽ <i class="fas fa-times" data-remove="budget"></i></div>`;
+            if (currentFilters.rating > 0) html += `<div class="badge"><i class="fas fa-star"></i> Рейтинг ${currentFilters.rating}+ <i class="fas fa-times" data-remove="rating"></i></div>`;
+            if (currentFilters.cuisine) html += `<div class="badge"><i class="fas fa-utensils"></i> ${currentFilters.cuisine} <i class="fas fa-times" data-remove="cuisine"></i></div>`;
+            html += `<button class="clear-all" id="innerClear">Очистить всё</button>`;
+            activeFiltersDisplay.innerHTML = html;
+            
+            document.querySelectorAll('[data-remove]').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const type = e.target.dataset.remove;
+                    if (type === 'allergen') { allergenSelect.value = ''; currentFilters.allergen = ''; }
+                    if (type === 'budget') { budgetMin.value = 300; budgetMax.value = 1500; currentFilters.budget = {min:300,max:1500}; }
+                    if (type === 'rating') { ratingSelect.value = '0'; currentFilters.rating = 0; }
+                    if (type === 'cuisine') { cuisineSelect.value = ''; currentFilters.cuisine = ''; }
+                    applyFiltersAndRender();
+                });
+            });
+            
+            const innerClear = document.getElementById('innerClear');
+            if (innerClear) {
+                innerClear.addEventListener('click', () => {
+                    allergenSelect.value = ''; 
+                    budgetMin.value = 300; 
+                    budgetMax.value = 1500; 
+                    ratingSelect.value = '4.5'; 
+                    cuisineSelect.value = 'Пицца';
+                    currentFilters = { allergen: '', budget: { min:300, max:1500 }, rating: 4.5, cuisine: 'Пицца' };
+                    applyFiltersAndRender();
+                });
+            }
+        }
+
+        function renderBest(filtered) {
+            let best = [];
+            filtered.forEach(r => {
+                r.dishes.forEach(d => {
+                    if (currentFilters.allergen && d.allergens.includes(currentFilters.allergen)) return;
+                    if (d.price < currentFilters.budget.min || d.price > currentFilters.budget.max) return;
+                    best.push({ resto: r.name, rating: r.rating, dish: d.name, price: d.price, allergens: d.allergens });
+                });
+            });
+            best.sort((a,b) => b.rating - a.rating || a.price - b.price);
+            const top = best.slice(0,3);
+            
+            if (top.length === 0) {
+                bestGrid.innerHTML = '<div style="grid-column:1/-1; padding:16px; color:#aaa; text-align:center;">Нет блюд, подходящих под фильтры</div>';
+            } else {
+                bestGrid.innerHTML = top.map(i => `
+                    <div class="best-card">
+                        <div class="resto-name">${i.resto} <span class="rating">★ ${i.rating}</span></div>
+                        <div class="dish-name">${i.dish}</div>
+                        <div class="price">${i.price} ₽</div>
+                        <div class="allergen-safe"><i class="fas fa-shield-alt"></i> ${i.allergens.length ? 'С осторожностью' : 'Без аллергенов'}</div>
+                    </div>
+                `).join('');
+            }
+            recContext.innerText = `${currentFilters.cuisine || 'Еда'} · ${currentCity}`;
+        }
+
+        function renderRestaurants(filtered) {
+            sortInfo.innerText = `найдено ${filtered.length} ресторанов`;
+            
+            if (filtered.length === 0) {
+                restaurantsGrid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:#8C8C8C;">В этом городе нет ресторанов по заданным фильтрам</div>';
+                return;
+            }
+            
+            restaurantsGrid.innerHTML = filtered.map(r => {
+                const dishesHtml = r.dishes
+                    .filter(d => {
+                        if (currentFilters.allergen && d.allergens.includes(currentFilters.allergen)) return false;
+                        return d.price >= currentFilters.budget.min && d.price <= currentFilters.budget.max;
+                    })
+                    .map(d => `
+                        <div class="dish-item">
+                            <span class="dish-name-small">
+                                ${d.allergens.length ? '' : '<i class="fas fa-check-circle allergen-icon"></i>'} 
+                                ${d.name}
+                            </span>
+                            <span>${d.price} ₽</span>
+                        </div>
+                    `).join('');
+                
+                return `
+                    <div class="resto-card">
+                        <div class="resto-title">${r.name} <span>★ ${r.rating}</span></div>
+                        <div class="resto-meta">
+                            <span>${r.cuisines.join(', ')}</span>
+                            <span>${r.minPrice}–${r.maxPrice}₽</span>
+                        </div>
+                        <div class="cuisine-tags">
+                            ${r.cuisines.map(c => `<span class="tag">${c}</span>`).join('')}
+                        </div>
+                        <div class="dish-list">
+                            ${dishesHtml || '<div style="color:#999; padding:8px 0;">Блюда не подходят под фильтры</div>'}
+                        </div>
+                        ${r.rating >= 4.7 ? '<span class="best-match-badge">Выбор редакции</span>' : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function applyFiltersAndRender() {
+            currentFilters.allergen = allergenSelect.value;
+            currentFilters.budget.min = parseInt(budgetMin.value) || 0;
+            currentFilters.budget.max = parseInt(budgetMax.value) || 9999;
+            currentFilters.rating = parseFloat(ratingSelect.value) || 0;
+            currentFilters.cuisine = cuisineSelect.value;
+            
+            const filtered = filterRestaurants();
+            renderRestaurants(filtered);
+            renderBest(filtered);
+            updateBadges();
+        }
+
+        applyBtn.addEventListener('click', applyFiltersAndRender);
+        
+        // Инициализация
+        applyFiltersAndRender();
+    })();
+</script>
+</body>
+</html>
